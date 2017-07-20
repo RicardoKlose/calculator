@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+    body, input {
+        font-family: 'Microsoft YaHei';
+    }
+    .calculator {
+        margin: 15px 20px;
+    }
+    .calculator input {
+        display: inline-block;
+        vertical-align: middle;
+        width: 75px;
+    }
+    div.margin {
+        display: inline-block;
+        width: 20px;
+    }
+    button {
+        margin: 15px;
+    }
+    @media screen and (max-width: 480px) {
+        div.margin {
+            display: block;
+            width: 0;
+        }
+    }
+    </style>
+</head>
+<body>
+<button id="addCalculator">增加一行计算</button><button id="clearCalculators">清空</button>
+</body>
+<script src="jquery-3.2.1.slim.min.js"></script>
+<script>
+    function calculate(k1, mad, mt, aad, vad) {
+        // if ()
+        var qad = k1 + 86 * mad - 92 * aad - 24 * vad;
+        var qar = (qad + 23 * mad) * (100 - mt) / (100 - mad) - 23 * mt;
+        return [qad, qar];
+    }
+    function tryCalculate(obj) {
+        return calculate(obj.k1, obj.mad, obj.mt, obj.aad, obj.vad);
+    }
+    function addCalculator() {
+        var div = $(
+            '<div class="calculator">' +
+                'K1<input class="k1" type="text"/><div class="margin"></div>' +
+                'Mad(内水)<input class="mad" type="text"/><div class="margin"></div>' +
+                'Mt(外水)<input class="mt" type="text"/><div class="margin"></div>' +
+                'Aad(灰份)<input class="aad" type="text"/><div class="margin"></div>' +
+                'Vad(挥发份)<input class="vad" type="text"/><br/><br/>' +
+                'Qnat.ad(分析低值) = <span class="qad"></span><br/>' +
+                'Qnat.ar(收到低值) = <span class="qar"></span>' +
+            '</div>'
+        );
+        var thisValues = {
+            k1: 0,
+            mad: 0,
+            mt: 0,
+            aad: 0,
+            vad: 0
+        };
+        div.find('input').on('input', function (e) {
+            var value = $(this).val();
+            var name = $(this).attr('class');
+            value = value.match(/^(\d{0,12})\.(\d{0,6})/g) || value.match(/^(\d{0,12})/g) || value;
+            $(this).val(value);
+            thisValues[name] = +value;
+            var arr = tryCalculate(thisValues);
+            div.find('.qad').text(arr[0]);
+            div.find('.qar').text(arr[1]);
+        });
+        $(this).before(div);
+        div.find('input').eq(0).focus();
+    }
+    $('#clearCalculators').on('click', function () {
+        $('.calculator').remove();
+        $('#addCalculator').click();
+    });
+    $('#addCalculator').on('click', addCalculator).click();
+</script>
+</html>

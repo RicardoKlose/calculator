@@ -35,8 +35,7 @@
 <script src="jquery-3.2.1.slim.min.js"></script>
 <script>
     function calculate(k1, mad, mt, aad, vad) {
-        // if ()
-        var qad = k1 + 86 * mad - 92 * aad - 24 * vad;
+        var qad = k1 - 86 * mad - 92 * aad - 24 * vad;
         var qar = (qad + 23 * mad) * (100 - mt) / (100 - mad) - 23 * mt;
         return [qad, qar];
     }
